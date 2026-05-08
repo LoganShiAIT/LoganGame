@@ -1,0 +1,247 @@
+:root {
+    --bg-color: #0a0a0a;
+    --primary-color: #8b5cf6; /* 电磁紫 */
+    --primary-glow: rgba(139, 92, 246, 0.5);
+    --text-color: #f8fafc;
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(255, 255, 255, 0.1);
+    
+    /* 动态熵变量 */
+    --entropy-level: 0;
+    --glitch-offset: 0px;
+    --chromatic-offset: 0px;
+    --jitter: 0px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+    transition: filter 0.3s ease;
+}
+
+/* 画布层 */
+#glitch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: calc(0.1 + var(--entropy-level) * 0.4);
+}
+
+/* 顶部导航 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    z-index: 10;
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 0.2rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-glow);
+    animation: jitter calc(0.5s / (var(--entropy-level) + 1)) infinite alternate;
+}
+
+.entropy-meter {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bar-container {
+    width: 200px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+#entropy-bar {
+    height: 100%;
+    background: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-glow);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 主体布局 */
+main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    overflow: hidden;
+}
+
+/* 世界核心区域 */
+#world {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    background: radial-gradient(circle at center, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#core-node {
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 30px var(--primary-glow);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#core-node:hover {
+    transform: scale(1.1);
+}
+
+.inner-circle {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* 消息日志 */
+#thought-log {
+    background: var(--panel-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#thought-log h2 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-right: 0.5rem;
+}
+
+.message {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 0.8rem;
+    border-left: 2px solid var(--primary-color);
+    background: rgba(255, 255, 255, 0.02);
+    animation: slideIn 0.3s ease-out;
+    transform: translateX(calc(var(--jitter) * 2));
+}
+
+.message.system { border-color: #64748b; opacity: 0.7; }
+
+/* 底部操作 */
+footer {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 10;
+}
+
+button {
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    outline: none;
+}
+
+.primary-btn {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* 动画定义 */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes jitter {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(var(--jitter), calc(-1 * var(--jitter))); }
+    50% { transform: translate(calc(-1 * var(--jitter)), var(--jitter)); }
+    75% { transform: translate(var(--jitter), var(--jitter)); }
+    100% { transform: translate(0, 0); }
+}
+
+/* 滚动条 */
+#messages::-webkit-scrollbar { width: 4px; }
+#messages::-webkit-scrollbar-track { background: transparent; }
+#messages::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+/* 熵值影响的滤镜 */
+.high-entropy-effect {
+    filter: 
+        hue-rotate(calc(var(--entropy-level) * 45deg)) 
+        contrast(calc(1 + var(--entropy-level) * 0.5))
+        blur(calc(var(--entropy-level) * 0.5px));
+}

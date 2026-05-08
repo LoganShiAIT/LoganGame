@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自我的回响：攀登 | Echoes of Self: Ascent</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="ui">
+        <div class="stats">
+            <span class="label">高度:</span>
+            <span id="height-val">0</span>m
+        </div>
+        <div class="stats">
+            <span class="label">昨日碎片:</span>
+            <span id="ghost-count">0</span>
+        </div>
+        <div id="hint">WASD 移动机械臂 · 点击/空格 释放吊装箱</div>
+    </div>
+    
+    <div id="game-container"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

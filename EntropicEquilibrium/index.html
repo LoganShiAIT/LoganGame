@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熵之平衡 | Entropic Equilibrium</title>
+    <meta name="description" content="一个关于秩序、混乱与平衡的哲学微型游戏。">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="low-entropy">
+        <canvas id="glitch-canvas"></canvas>
+        
+        <header>
+            <div class="logo">ENTROPY.SYS</div>
+            <div class="entropy-meter">
+                <span class="label">系统熵值:</span>
+                <div class="bar-container">
+                    <div id="entropy-bar" style="width: 0%;"></div>
+                </div>
+                <span id="entropy-value">0%</span>
+            </div>
+        </header>
+
+        <main>
+            <section id="world">
+                <div id="core-node" title="点击建立秩序">
+                    <div class="inner-circle"></div>
+                </div>
+                <div id="connection-layer"></div>
+            </section>
+
+            <aside id="thought-log">
+                <h2>意识碎片</h2>
+                <div id="messages">
+                    <div class="message system">初始化连接...</div>
+                </div>
+            </aside>
+        </main>
+
+        <footer>
+            <button id="btn-order" class="primary-btn">建立秩序 (+Score, +Entropy)</button>
+            <button id="btn-balance" class="secondary-btn">寻求平衡 (-Entropy, -Score)</button>
+        </footer>
+
+        <div id="overlay"></div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
