@@ -4,47 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>熵之平衡 | Entropic Equilibrium</title>
-    <meta name="description" content="一个关于秩序、混乱与平衡的哲学微型游戏。">
+    <meta name="description" content="在失衡中受伤，在平衡中战斗。一款关于自我掌控的哲学战斗游戏。">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app" class="low-entropy">
+    <div id="app">
         <canvas id="glitch-canvas"></canvas>
-        
-        <header>
-            <div class="logo">ENTROPY.SYS</div>
-            <div class="entropy-meter">
-                <span class="label">系统熵值:</span>
-                <div class="bar-container">
-                    <div id="entropy-bar" style="width: 0%;"></div>
+
+        <!-- 顶部状态栏 -->
+        <header id="hud">
+            <div class="hud-left">
+                <div class="hud-label">心神</div>
+                <div class="bar-wrap">
+                    <div id="player-hp-bar" class="bar hp-bar"></div>
                 </div>
-                <span id="entropy-value">0%</span>
+                <span id="player-hp-text">100</span>
+            </div>
+
+            <div class="hud-center">
+                <span id="wave-label">WAVE <span id="wave-num">1</span></span>
+            </div>
+
+            <div class="hud-right">
+                <span id="enemy-hp-text">100</span>
+                <div class="bar-wrap">
+                    <div id="enemy-hp-bar" class="bar enemy-bar"></div>
+                </div>
+                <div class="hud-label">对方</div>
             </div>
         </header>
 
-        <main>
-            <section id="world">
-                <div id="core-node" title="点击建立秩序">
-                    <div class="inner-circle"></div>
+        <!-- 主战斗区 -->
+        <main id="battle-area">
+            <!-- 左侧：技能栏 -->
+            <aside id="skill-panel">
+                <div class="panel-title">被动</div>
+                <div id="passive-list"></div>
+                <div class="panel-title" style="margin-top:1rem;">主动技能</div>
+                <div id="active-slots">
+                    <div class="skill-slot" data-slot="0">
+                        <div class="skill-btn disabled" data-slot="0">
+                            <span class="slot-key">1</span>
+                            <span class="skill-icon">—</span>
+                            <span class="skill-name">空</span>
+                            <div class="cd-overlay"></div>
+                            <div class="cd-text"></div>
+                        </div>
+                    </div>
+                    <div class="skill-slot" data-slot="1">
+                        <div class="skill-btn disabled" data-slot="1">
+                            <span class="slot-key">2</span>
+                            <span class="skill-icon">—</span>
+                            <span class="skill-name">空</span>
+                            <div class="cd-overlay"></div>
+                            <div class="cd-text"></div>
+                        </div>
+                    </div>
+                    <div class="skill-slot" data-slot="2">
+                        <div class="skill-btn disabled" data-slot="2">
+                            <span class="slot-key">3</span>
+                            <span class="skill-icon">—</span>
+                            <span class="skill-name">空</span>
+                            <div class="cd-overlay"></div>
+                            <div class="cd-text"></div>
+                        </div>
+                    </div>
+                    <div class="skill-slot" data-slot="3">
+                        <div class="skill-btn disabled" data-slot="3">
+                            <span class="slot-key">4</span>
+                            <span class="skill-icon">—</span>
+                            <span class="skill-name">空</span>
+                            <div class="cd-overlay"></div>
+                            <div class="cd-text"></div>
+                        </div>
+                    </div>
                 </div>
-                <div id="connection-layer"></div>
+                <div class="hint-text">按 1-4 释放技能</div>
+            </aside>
+
+            <!-- 中央：平衡木舞台 -->
+            <section id="balance-stage">
+                <!-- 敌人对话区 -->
+                <div id="enemy-dialog">
+                    <div id="enemy-name">??? </div>
+                    <div id="enemy-speech"></div>
+                </div>
+
+                <!-- 平衡木 Canvas -->
+                <canvas id="balance-canvas"></canvas>
+
+                <!-- 平衡状态指示 -->
+                <div id="balance-indicator">
+                    <span id="balance-status-text">— 保持平衡 —</span>
+                </div>
+
+                <!-- 操控提示 -->
+                <div id="controls-hint">
+                    <kbd>A</kbd> 向左 &nbsp;&nbsp; <kbd>D</kbd> 向右
+                </div>
             </section>
 
-            <aside id="thought-log">
-                <h2>意识碎片</h2>
-                <div id="messages">
-                    <div class="message system">初始化连接...</div>
-                </div>
+            <!-- 右侧：战斗日志 -->
+            <aside id="battle-log">
+                <div class="panel-title">战场意识</div>
+                <div id="log-messages"></div>
             </aside>
         </main>
 
-        <footer>
-            <button id="btn-order" class="primary-btn">建立秩序 (+Score, +Entropy)</button>
-            <button id="btn-balance" class="secondary-btn">寻求平衡 (-Entropy, -Score)</button>
-        </footer>
+        <!-- 遮罩层（肉鸽选择 / 游戏结束） -->
+        <div id="overlay" class="hidden">
+            <!-- 肉鸽卡牌选择 -->
+            <div id="roguelike-panel" class="hidden">
+                <h2 id="roguelike-title">选择强化</h2>
+                <p id="roguelike-subtitle">意志的凝聚——选择一个路径</p>
+                <div id="card-row"></div>
+            </div>
 
-        <div id="overlay"></div>
+            <!-- 游戏结束 -->
+            <div id="gameover-panel" class="hidden">
+                <h2 id="gameover-title">心神崩溃</h2>
+                <p id="gameover-subtitle">你坚持了 <span id="final-wave">0</span> 波</p>
+                <button id="btn-restart" class="primary-btn">重新凝聚</button>
+            </div>
+        </div>
     </div>
+
     <script src="game.js"></script>
 </body>
 </html>
